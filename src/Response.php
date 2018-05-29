@@ -2,6 +2,8 @@
 
 namespace MichaelDrennen\JSONAPI;
 
+use MichaelDrennen\JSONAPI\Error;
+
 /**
  * Class Response
  * @package MichaelDrennen\JSONAPI
@@ -56,20 +58,36 @@ class Response {
         return $this;
     }
 
-    public function addError(): Response {
+    public function addError( Error $error, $index = NULL ): Response {
+        if ( $index ):
+            $this->errors[ $index ] = $error;
+        else:
+            $this->errors[] = $error;
+        endif;
 
         return $this;
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     public function toArray(): array {
-        $array = [];
-        return $array;
+        $this->transformData();
+        return [
+            'data'   => $this->data,
+            'errors' => [],
+            'meta'   => [],
+        ];
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function transformData() {
         if ( is_null( $this->transformer ) ):
             throw new \Exception( "You need to set a transformer." );
         endif;
-        $this->data = $this->transformer->transform();
+        $this->data = $this->transformer->transform( $this->sourceData );
     }
 }
