@@ -36,13 +36,28 @@ class Response {
     protected $meta;
 
 
-    protected $sourceData  = NULL;
+    /**
+     * @var mixed An object, array, or Collection
+     */
+    protected $sourceData = NULL;
+
+    /**
+     * @var \MichaelDrennen\JSONAPI\AbstractTransformer The developer supplied transformer that determines what data
+     *      gets returned in the Response.
+     */
     protected $transformer = NULL;
 
+    /**
+     * TODO I could probably make this protected, since it should only be called by the static create() method.
+     * Response constructor.
+     */
     public function __construct() {
 
     }
 
+    /**
+     * @return \MichaelDrennen\JSONAPI\Response
+     */
     public static function create() {
         return new Response();
     }
@@ -74,9 +89,13 @@ class Response {
      */
     public function toArray(): array {
         $this->transformData();
+        $arrayErrors = [];
+        foreach ( $this->errors as $index => $error ):
+            $arrayErrors[ $index ] = $error->toArray();
+        endforeach;
         return [
             'data'   => $this->data,
-            'errors' => [],
+            'errors' => $arrayErrors,
             'meta'   => [],
         ];
     }

@@ -47,18 +47,24 @@ class Error {
     protected $code;
 
     /**
-     * @var string A short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization.
+     * @var string A short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence
+     *      of the problem, except for purposes of localization.
      */
     protected $title;
 
     /**
-     * @var string A human-readable explanation specific to this occurrence of the problem. Like title, this field’s value can be localized.
+     * @var string A human-readable explanation specific to this occurrence of the problem. Like title, this field’s
+     *      value can be localized.
      */
     protected $detail;
 
     /**
      * TODO I don't plan on implementing this just yet.
-     * @var array An object containing references to the source of the error, optionally including any of the following members: pointer: a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute]. parameter: a string indicating which URI query parameter caused the error. meta: a meta object containing non-standard meta-information about the error.
+     * @var array An object containing references to the source of the error, optionally including any of the following
+     *      members: pointer: a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data"
+     *      for a primary data object, or "/data/attributes/title" for a specific attribute]. parameter: a string
+     *      indicating which URI query parameter caused the error. meta: a meta object containing non-standard
+     *      meta-information about the error.
      */
     protected $source;
 
@@ -74,6 +80,70 @@ class Error {
 
     public static function create() {
         return new Error();
+    }
+
+    public function setId( string $id ): Error {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function addLink( $link, $index = NULL ): Error {
+        if ( $index ):
+            $this->links[ $index ] = $link;
+        else:
+            $this->links[] = $link;
+        endif;
+
+        return $this;
+    }
+
+    public function setAbout( string $about ): Error {
+        $this->about = $about;
+        return $this;
+    }
+
+    public function setStatus( string $status ): Error {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function setCode( string $code ): Error {
+        $this->code = $code;
+        return $this;
+    }
+
+
+    public function setTitle( string $title ): Error {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function setDetail( string $detail ): Error {
+        $this->detail = $detail;
+        return $this;
+    }
+
+    /**
+     * TODO Not sure I want to implement this yet.
+     * @param $source
+     * @return \MichaelDrennen\JSONAPI\Error
+     */
+    public function setSource( $source ): Error {
+        $this->source = $source;
+        return $this;
+    }
+
+    public function toArray() {
+        return [
+            'id'     => $this->id,
+            'links'  => $this->links,
+            'about'  => $this->about,
+            'status' => $this->status,
+            'code'   => $this->code,
+            'title'  => $this->title,
+            'detail' => $this->detail,
+            'source' => $this->source,
+        ];
     }
 
 
