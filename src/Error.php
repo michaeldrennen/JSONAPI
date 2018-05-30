@@ -83,7 +83,7 @@ class Error {
         return new Error();
     }
 
-    public function setId( string $id ): Error {
+    public function setId( string $id = NULL ): Error {
         $this->id = $id;
         return $this;
     }
