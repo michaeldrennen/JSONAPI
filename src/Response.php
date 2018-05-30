@@ -62,17 +62,30 @@ class Response {
         return new Response();
     }
 
+    /**
+     * @param null $data
+     * @return \MichaelDrennen\JSONAPI\Response
+     */
     public function setData( $data = NULL ): Response {
         $this->sourceData = $data;
         return $this;
     }
 
 
+    /**
+     * @param null $transformer
+     * @return \MichaelDrennen\JSONAPI\Response
+     */
     public function transformWith( $transformer = NULL ): Response {
         $this->transformer = $transformer;
         return $this;
     }
 
+    /**
+     * @param \MichaelDrennen\JSONAPI\Error $error
+     * @param null                          $index
+     * @return \MichaelDrennen\JSONAPI\Response
+     */
     public function addError( Error $error, $index = NULL ): Response {
         if ( $index ):
             $this->errors[ $index ] = $error;
@@ -105,7 +118,7 @@ class Response {
      *
      */
     protected function transformData() {
-        if ( FALSE !== is_null( $this->transformer ) ):
+        if ( ! is_null( $this->transformer ) ):
             $this->data = $this->transformer->transform( $this->sourceData );
         endif;
     }
