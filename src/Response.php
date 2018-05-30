@@ -62,13 +62,13 @@ class Response {
         return new Response();
     }
 
-    public function setData( $data ): Response {
+    public function setData( $data = NULL ): Response {
         $this->sourceData = $data;
         return $this;
     }
 
 
-    public function transformWith( $transformer ): Response {
+    public function transformWith( $transformer = NULL ): Response {
         $this->transformer = $transformer;
         return $this;
     }
@@ -106,9 +106,8 @@ class Response {
      * @throws \Exception
      */
     protected function transformData() {
-        if ( is_null( $this->transformer ) ):
-            throw new \Exception( "You need to set a transformer." );
+        if ( FALSE !== is_null( $this->transformer ) ):
+            $this->data = $this->transformer->transform( $this->sourceData );
         endif;
-        $this->data = $this->transformer->transform( $this->sourceData );
     }
 }
