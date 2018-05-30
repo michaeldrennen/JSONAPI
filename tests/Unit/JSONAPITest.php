@@ -16,6 +16,17 @@ class JSONAPITest extends TestCase {
         $this->assertTrue( is_array( $array ) );
     }
 
+    /**
+     * @test
+     */
+    public function missingTransformerShouldThrowException() {
+        $this->expectException( Exception::class );
+        $user  = new User( 74, "Mike", TRUE );
+        $array = \MichaelDrennen\JSONAPI\Response::create()
+                                                 ->setData( $user )
+                                                 ->toArray();
+    }
+
 
     /**
      * @test
@@ -28,22 +39,6 @@ class JSONAPITest extends TestCase {
                                                  ->toArray();
 
         $this->assertFalse( isset( $array[ 'data' ][ 'name' ] ) );
-    }
-
-
-    /**
-     * @test
-     */
-    public function setErrorShouldHaveErrorCode() {
-        $user  = new User( 74, "Mike", TRUE );
-        $array = \MichaelDrennen\JSONAPI\Response::create()
-                                                 ->setData( $user )
-                                                 ->transformWith( new UserTransformer() )
-                                                 ->addError( \MichaelDrennen\JSONAPI\Error::create()
-                                                                                          ->setCode( 666 )
-                                                     , 'test' )
-                                                 ->toArray();
-        $this->assertEquals( 666, $array[ 'errors' ][ 'test' ][ 'code' ] );
     }
 
 

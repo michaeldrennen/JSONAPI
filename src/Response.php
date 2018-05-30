@@ -28,7 +28,7 @@ class Response {
     /**
      * @var array an array of error objects
      */
-    protected $errors;
+    protected $errors = [];
 
     /**
      * @var array A meta object that contains non-standard meta-information.
@@ -90,6 +90,8 @@ class Response {
     public function toArray(): array {
         $this->transformData();
         $arrayErrors = [];
+
+
         foreach ( $this->errors as $index => $error ):
             $arrayErrors[ $index ] = $error->toArray();
         endforeach;
