@@ -85,7 +85,6 @@ class Response {
 
     /**
      * @return array
-     * @throws \Exception
      */
     public function toArray(): array {
         $this->transformData();
@@ -103,7 +102,7 @@ class Response {
     }
 
     /**
-     * @throws \Exception
+     *
      */
     protected function transformData() {
         if ( FALSE !== is_null( $this->transformer ) ):
