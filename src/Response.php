@@ -115,11 +115,14 @@ class Response {
     }
 
     /**
-     *
+     * If there is a transformer assigned to this Response, then allow it to transform the source data according to its
+     * rules. Otherwise, just plop the source data into the Response's data property.
      */
     protected function transformData() {
         if ( ! is_null( $this->transformer ) ):
             $this->data = $this->transformer->transform( $this->sourceData );
+        else:
+            $this->data = $this->sourceData;
         endif;
     }
 }
