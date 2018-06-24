@@ -119,10 +119,16 @@ class Response {
      * rules. Otherwise, just plop the source data into the Response's data property.
      */
     protected function transformData() {
-        if ( ! is_null( $this->transformer ) ):
-            $this->data = $this->transformer->transform( $this->sourceData );
-        else:
+        if ( is_null( $this->transformer ) ):
             $this->data = $this->sourceData;
+        else:
+            if ( is_iterable( $this->sourceData ) ):
+                foreach ( $this->sourceData as $key => $data ):
+                    $this->data[ $key ] = $this->transformer->transform( $data );
+                endforeach;
+            else:
+                $this->data = $this->transformer->transform( $this->sourceData );
+            endif;
         endif;
     }
 }
