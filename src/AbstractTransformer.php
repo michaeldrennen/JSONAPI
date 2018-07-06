@@ -6,24 +6,30 @@ use Illuminate\Support\Collection;
 
 abstract class AbstractTransformer {
 
+    protected $keyFieldName = NULL;
 
+    /**
+     * AbstractTransformer constructor.
+     * @param string|NULL $keyFieldName Want to pass in an array (or Collection or other Iterable type) and you want
+     *                                  the output to be keyed instead of numerically indexed? Provide the field name
+     *                                  of the item to be transformed that you want to be the key in the returned data
+     *                                  set.
+     */
+    public function __construct( string $keyFieldName = NULL ) {
+        $this->keyFieldName = $keyFieldName;
+    }
+
+    /**
+     * @param null $item
+     * @return array
+     */
     public abstract function transform( $item = NULL ): array;
 
     /**
-     * @param Collection|mixed $sourceData
-     * @return array
+     * Getter
+     * @return null|string
      */
-    public function transformData( $sourceData = NULL ): array {
-
-        if ( is_a( $sourceData, Collection::class ) || is_array( $sourceData ) ):
-            $return = [];
-            foreach ( $sourceData as $item ):
-                $return[] = $this->transform( $item );
-            endforeach;
-            return $return;
-        endif;
-
-        return $this->transform( $sourceData );
+    public function getKey() {
+        return $this->keyFieldName;
     }
-
 }
