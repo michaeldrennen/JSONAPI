@@ -71,6 +71,15 @@ class Response {
         return $this;
     }
 
+    /**
+     * @param null $meta
+     * @return \MichaelDrennen\JSONAPI\Response
+     */
+    public function setMeta( $meta = NULL ): Response {
+        $this->meta = $meta;
+        return $this;
+    }
+
 
     /**
      * @param null $transformer
@@ -110,7 +119,7 @@ class Response {
         return [
             'data'   => $this->data,
             'errors' => $arrayErrors,
-            'meta'   => [],
+            'meta'   => $this->meta,
         ];
     }
 
