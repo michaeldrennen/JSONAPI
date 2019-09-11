@@ -1,5 +1,5 @@
 # JSONAPI
-![GitHub](https://img.shields.io/github/license/michaeldrennen/jsonapi) [![Build Status](https://travis-ci.org/michaeldrennen/JSONAPI.svg?branch=master)](https://travis-ci.org/michaeldrennen/JSONAPI) ![GitHub issues](https://img.shields.io/github/issues/michaeldrennen/jsonapi) ![Packagist](https://img.shields.io/packagist/dt/michaeldrennen/jsonapi) 
+![GitHub](https://img.shields.io/github/license/michaeldrennen/jsonapi) [![Build Status](https://travis-ci.org/michaeldrennen/JSONAPI.svg?branch=master)](https://travis-ci.org/michaeldrennen/JSONAPI) ![GitHub issues](https://img.shields.io/github/issues/michaeldrennen/jsonapi) ![Packagist](https://img.shields.io/packagist/dt/michaeldrennen/jsonapi) ![Beerpay](https://img.shields.io/beerpay/michaeldrennen/jsonapi) 
 
 This is a PHP library for those wanting to build an API and return structured data to the requesting client.
 ```php
