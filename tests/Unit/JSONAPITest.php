@@ -24,7 +24,7 @@ class JSONAPITest extends TestCase {
         $array = \MichaelDrennen\JSONAPI\Response::create()
                                                  ->setData( $user )
                                                  ->toArray();
-        $this->assertCount( 3, $array[ 'data' ] );
+        $this->assertCount( 4, $array[ 'data' ] );
     }
 
 
@@ -80,5 +80,27 @@ class JSONAPITest extends TestCase {
 
     }
 
+
+    /**
+     * @test
+     * @group group
+     */
+    public function toArrayWithGroupByShouldReturnNestedArray() {
+        $users = [
+            new User( 74, "Mike", TRUE, 'accounting' ),
+            new User( 90, "Joe", FALSE, 'accounting' ),
+            new User( 125, "Tom", FALSE, 'janitorial' ),
+            new User( 135, "Barry", FALSE, 'janitorial' ),
+        ];
+        $array = \MichaelDrennen\JSONAPI\Response::create()
+                                        ->setData( $users )
+                                        ->groupBy( 'department' )
+                                        ->transformWith( new UserTransformer() )
+                                        ->toArray();
+
+        $this->assertTrue( is_array( $array['data'] ) );
+        $this->assertTrue( is_array( $array['data'][ 'accounting' ] ) );
+        $this->assertCount( 2, $array['data'][ 'accounting' ] );
+    }
 
 }

@@ -15,6 +15,7 @@ class UserTransformer extends \MichaelDrennen\JSONAPI\AbstractTransformer {
         return [
             'id'    => $item->id,
             'admin' => $item->admin,
+            'department' => $item->department,
         ];
 
     }

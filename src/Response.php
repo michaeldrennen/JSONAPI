@@ -47,6 +47,13 @@ class Response {
      */
     protected $transformer = NULL;
 
+
+    /**
+     * The field name from the Model
+     * @var null
+     */
+    protected $groupBy = NULL;
+
     /**
      * TODO I could probably make this protected, since it should only be called by the static create() method.
      * Response constructor.
@@ -68,6 +75,16 @@ class Response {
      */
     public function setData( $data = NULL ): Response {
         $this->sourceData = $data;
+        return $this;
+    }
+
+
+    /**
+     * @param $field
+     * @return Response
+     */
+    public function groupBy( $field ): Response {
+        $this->groupBy = $field;
         return $this;
     }
 
@@ -110,9 +127,13 @@ class Response {
      */
     public function toArray(): array {
         $this->transformData();
+
+        if ( $this->groupBy ):
+            $this->data = $this->groupDataByKey( $this->groupBy, $this->data );
+        endif;
+
+
         $arrayErrors = [];
-
-
         foreach ( $this->errors as $index => $error ):
             $arrayErrors[ $index ] = $error->toArray();
         endforeach;
@@ -145,5 +166,25 @@ class Response {
                 $this->data = $this->transformer->transform( $this->sourceData );
             endif;
         endif;
+    }
+
+    /**
+     * This should really be a helper function or part of PHP's core.
+     * @param $key
+     * @param array $data
+     * @return array
+     */
+    protected function groupDataByKey( $key, array $data ): array {
+
+        $result = [];
+        foreach ( $data as $i => $object ):
+            if ( FALSE === isset( $result[ $object[ $key ] ] ) ):
+                $result[ $object[ $key ] ] = [];
+            endif;
+
+            $result[ $object[ $key ] ][] = $object;
+        endforeach;
+
+        return $result;
     }
 }
