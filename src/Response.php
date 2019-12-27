@@ -191,44 +191,12 @@ class Response {
         return $result;
     }
 
+    /**
+     * @param array $keys
+     * @param array $data
+     * @return array
+     */
     protected function groupDataByArrayOfKeys( array $keys, array $data ): array {
-
         return collect($data)->groupBy($keys)->toArray();
-
-
-
-//        $result = [];
-//
-//        $reversedKeys = array_reverse( $keys );
-//
-//        $resultsByKey = [];
-//        foreach($reversedKeys as $key):
-//            $resultsByKey = $this->groupDataByKey($key, $data);
-//        endforeach;
-//
-//
-//        foreach ( $data as $i => $object ):
-//            $fieldValuePairsForObject = [];
-//            foreach ( $keys as $field ):
-//                $fieldValuePairsForObject
-//            endforeach;
-//
-//            if ( FALSE === isset( $result[ $object[ $key ] ] ) ):
-//                $result[ $object[ $key ] ] = [];
-//            endif;
-//
-//            $result[ $object[ $key ] ][] = $object;
-//        endforeach;
-//
-//
-//        foreach ( $data as $i => $object ):
-//            if ( FALSE === isset( $result[ $object[ $key ] ] ) ):
-//                $result[ $object[ $key ] ] = [];
-//            endif;
-//
-//            $result[ $object[ $key ] ][] = $object;
-//        endforeach;
-//
-//        return $result;
     }
 }
