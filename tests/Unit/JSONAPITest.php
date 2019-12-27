@@ -24,7 +24,7 @@ class JSONAPITest extends TestCase {
         $array = \MichaelDrennen\JSONAPI\Response::create()
                                                  ->setData( $user )
                                                  ->toArray();
-        $this->assertCount( 4, $array[ 'data' ] );
+        $this->assertCount( 5, $array[ 'data' ] );
     }
 
 
@@ -93,14 +93,38 @@ class JSONAPITest extends TestCase {
             new User( 135, "Barry", FALSE, 'janitorial' ),
         ];
         $array = \MichaelDrennen\JSONAPI\Response::create()
-                                        ->setData( $users )
-                                        ->groupBy( 'department' )
-                                        ->transformWith( new UserTransformer() )
-                                        ->toArray();
+                                                 ->setData( $users )
+                                                 ->groupBy( 'department' )
+                                                 ->transformWith( new UserTransformer() )
+                                                 ->toArray();
 
-        $this->assertTrue( is_array( $array['data'] ) );
-        $this->assertTrue( is_array( $array['data'][ 'accounting' ] ) );
-        $this->assertCount( 2, $array['data'][ 'accounting' ] );
+        $this->assertTrue( is_array( $array[ 'data' ] ) );
+        $this->assertTrue( is_array( $array[ 'data' ][ 'accounting' ] ) );
+        $this->assertCount( 2, $array[ 'data' ][ 'accounting' ] );
+    }
+
+
+    /**
+     * @test
+     * @group multiple
+     */
+    public function toArrayWithMultipleGroupByFieldsShouldReturnDoubleNestedArray() {
+        $users = [
+            new User( 74, "Mike", TRUE, 'accounting', 'Steamboat Springs' ),
+            new User( 90, "Joe", FALSE, 'accounting', 'Craig' ),
+            new User( 125, "Tom", TRUE, 'janitorial', 'Steamboat Springs' ),
+            new User( 135, "Barry", FALSE, 'janitorial', 'Craig' ),
+        ];
+
+        $array = \MichaelDrennen\JSONAPI\Response::create()
+                                                 ->setData( $users )
+                                                 ->groupBy( [ 'city', 'department' ] )
+                                                 ->transformWith( new UserTransformer() )
+                                                 ->toArray();
+
+        $this->assertTrue( is_array( $array[ 'data' ] ) );
+        $this->assertTrue( is_array( $array[ 'data' ][ 'Steamboat Springs' ] ) );
+        $this->assertTrue( is_array( $array[ 'data' ][ 'Steamboat Springs' ][ 'accounting' ] ) );
     }
 
 }

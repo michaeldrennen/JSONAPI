@@ -50,7 +50,7 @@ class Response {
 
     /**
      * The field name from the Model
-     * @var null
+     * @var string|array|null
      */
     protected $groupBy = NULL;
 
@@ -109,7 +109,7 @@ class Response {
 
     /**
      * @param \MichaelDrennen\JSONAPI\Error $error
-     * @param null                          $index
+     * @param null $index
      * @return \MichaelDrennen\JSONAPI\Response
      */
     public function addError( Error $error, $index = NULL ): Response {
@@ -128,7 +128,9 @@ class Response {
     public function toArray(): array {
         $this->transformData();
 
-        if ( $this->groupBy ):
+        if ( $this->groupBy && is_array($this->groupBy) ):
+            $this->data = $this->groupDataByArrayOfKeys($this->groupBy, $this->data );
+        elseif($this->groupBy):
             $this->data = $this->groupDataByKey( $this->groupBy, $this->data );
         endif;
 
@@ -156,7 +158,7 @@ class Response {
             if ( is_iterable( $this->sourceData ) ):
 
                 foreach ( $this->sourceData as $key => $data ):
-                    if ( ! is_null( $this->transformer->getKey() ) && isset( $data->{$this->transformer->getKey()} ) ):
+                    if ( !is_null( $this->transformer->getKey() ) && isset( $data->{$this->transformer->getKey()} ) ):
                         $this->data[ $data->{$this->transformer->getKey()} ] = $this->transformer->transform( $data );
                     else:
                         $this->data[ $key ] = $this->transformer->transform( $data );
@@ -167,6 +169,7 @@ class Response {
             endif;
         endif;
     }
+
 
     /**
      * This should really be a helper function or part of PHP's core.
@@ -186,5 +189,46 @@ class Response {
         endforeach;
 
         return $result;
+    }
+
+    protected function groupDataByArrayOfKeys( array $keys, array $data ): array {
+
+        return collect($data)->groupBy($keys)->toArray();
+
+
+
+//        $result = [];
+//
+//        $reversedKeys = array_reverse( $keys );
+//
+//        $resultsByKey = [];
+//        foreach($reversedKeys as $key):
+//            $resultsByKey = $this->groupDataByKey($key, $data);
+//        endforeach;
+//
+//
+//        foreach ( $data as $i => $object ):
+//            $fieldValuePairsForObject = [];
+//            foreach ( $keys as $field ):
+//                $fieldValuePairsForObject
+//            endforeach;
+//
+//            if ( FALSE === isset( $result[ $object[ $key ] ] ) ):
+//                $result[ $object[ $key ] ] = [];
+//            endif;
+//
+//            $result[ $object[ $key ] ][] = $object;
+//        endforeach;
+//
+//
+//        foreach ( $data as $i => $object ):
+//            if ( FALSE === isset( $result[ $object[ $key ] ] ) ):
+//                $result[ $object[ $key ] ] = [];
+//            endif;
+//
+//            $result[ $object[ $key ] ][] = $object;
+//        endforeach;
+//
+//        return $result;
     }
 }

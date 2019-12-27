@@ -13,9 +13,10 @@ class UserTransformer extends \MichaelDrennen\JSONAPI\AbstractTransformer {
             return [];
         endif;
         return [
-            'id'    => $item->id,
-            'admin' => $item->admin,
+            'id'         => $item->id,
+            'admin'      => $item->admin,
             'department' => $item->department,
+            'city'       => $item->city,
         ];
 
     }
