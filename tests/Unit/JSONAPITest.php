@@ -16,6 +16,21 @@ class JSONAPITest extends TestCase {
         $this->assertTrue( is_array( $array ) );
     }
 
+
+    /**
+     * @test
+     * @group meta
+     */
+    public function toArrayWithSetMetaShouldReturnArrayWithMeta() {
+
+        $array = \MichaelDrennen\JSONAPI\Response::create()
+                                                 ->transformWith( new UserTransformer() )
+                                                 ->setMeta( [ 'foo' => 'bar' ] )
+                                                 ->toArray();
+        $this->assertTrue( is_array( $array[ 'meta' ] ) );
+        $this->assertEquals( 'bar', $array[ 'meta' ][ 'foo' ] );
+    }
+
     /**
      * @test
      */
