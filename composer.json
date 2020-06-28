@@ -2,6 +2,7 @@
   "name": "michaeldrennen/jsonapi",
   "description": "A framework agnostic PHP library that implements some of the json:api specification.",
   "type": "library",
+  "license": "MIT",
   "authors": [
     {
       "name": "Michael Drennen",
